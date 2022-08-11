@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+
+  <body style="overflow-x: hidden;">
+
+    <div class="mainclass" style="width:100%; text-align: center; ">
+      <table class="table" id="table">
+        <tr class="row" id="row1" style="margin-top: 20px;">
+          <h1 id="headertag" >WELCOME TO DATA SCRAPPER</h1>
+        </tr>
+        <tr class="row" id="row2">
+          <input type="file" id="inputfile">
+        </tr>
+        <tr class="row" id="row5">
+          <td>
+            <div id="counter" style="padding: 30px; display: flex; align-items: baseline;">
+        <h3 >Total Urls : </h3><h3 id="totalurls"></h3>
+        <h3 >At Url No: </h3><h3 id="Posurls"></h3>
+            </div>
+          </td>
+        </tr>
+      </table>
+    
+    </div>
+
+      <div class="scrap" id="crap" tabindex="-1" style="width: 100%; height:100%;" >
+
+       </div>
+       
+       <div class="btn">
+        <button id="myButton" style="width: 150px ; height:50px;" 
+        type="button" >NEXT</button>
+       </div>
+
+    <div id="myDIVhref" style="padding: 30px;">
+
+    </div>
+
+
+
+
+    <script type="text/javascript">
+ 
+
+const para = document.createElement("iframe");
+
+      let texts;
+      let te;
+      texts= localStorage.getItem("URLS");
+      if(texts!=null)
+      {
+        te = texts.split('\n');
+        document.getElementById("totalurls").innerText= te.length;
+         console.log(te);
+        let j=0;
+        for(j=0; j<te.length; j++){
+          const para3 = document.createElement("a");
+            para3.href = te[j];
+            para3.innerText= te[j];
+            para3.id = "id/"+j.toString();
+            document.getElementById("myDIVhref").appendChild(para3);
+        }
+
+        let k=0; 
+       para.name="myframee";
+       para.src=te[k];
+        para.style.height="100vh";
+        para.style.width="100vw";
+       para.id = "id/"+k.toString();
+      
+       
+       para.allow="geolocation";
+       para.style.position="sticky";
+       para.style.objectPosition="center";
+       para.style.zIndex="999999;"
+       para.style.display="block";
+       para.style.overflowX= "hidden";
+
+       document.getElementById("crap").appendChild(para);
+        const para2 = document.createElement("a");
+        var ifrm= document.getElementById("id/"+k.toString()).contentWindow;
+        console.log(ifrm.document);
+        document.getElementById("myButton").onclick = function () {
+              //one by one
+
+              if(k<te.length){
+                // window.open(te[k]+"?geo="+geo+"&size="+width+"x"+height, "_blank");
+
+                para2.href=te[k];
+                para2.target="myframee";
+                para2.click();
+          
+                 document.getElementById("Posurls").innerText= (k+1).toString();
+                  
+                  k=k+1;
+                  }
+                else{
+                    console.log('You have reached max');
+                  }
+              }        
+
+      }
+      else{
+        console.log("local storage is empty");
+      }
+         
+
+        document.getElementById("inputfile")
+          .addEventListener("change", function () {
+            var fr = new FileReader();
+            fr.onload = function () {
+              var arr = fr.result.split("\n");
+              localStorage.setItem("URLS", fr.result);
+                 console.log(arr.length);
+              document.getElementById("myDIV").textContent = fr.result;
+
+              let i=0;
+              document.getElementById("myButton").onclick = function () {
+              //one by one
+
+              if(i!=arr.length){
+                  window.open(arr[i], "_blank");
+                  //location.href = (, "_blank");
+                  i=i+1;
+                  }
+                else{
+                    console.log('You have reached at Last of the File');
+                  }
+              }        
+            };
+            fr.readAsText(this.files[0]);
+            location.reload();
+          });
+    </script>
+  </body>
+</html>
+
+
